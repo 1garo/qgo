@@ -1,16 +1,15 @@
 package main
 
 import (
-	"container/list"
 	"log"
 	ctl "qgo/controller"
 
 	"github.com/gin-gonic/gin"
 )
 
-func createQueue() *list.List {
-	return list.New()
-}
+// TODO: implement the concept of pub/sub
+// pub being who post the msg
+// sub being the consumer
 
 func main() {
 
