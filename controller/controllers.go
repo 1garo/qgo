@@ -8,30 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-/*
-// TODO: try to implement something similiar to this
-
-// implementation of remove function from container/list lib to avoid memory leak
-func (l *List) remove(e *Element) *Element {
-	e.prev.next = e.next
-	e.next.prev = e.prev
-	e.next = nil // avoid memory leaks
-	e.prev = nil // avoid memory leaks
-	e.list = nil
-	l.len--
-	return e
-}
-// pub function that is called
-func (l *List) Remove(e *Element) interface{} {
-	if e.list == l {
-		// if e.list == l, l must have been initialized when e was inserted
-		// in l or l == nil (e is a zero Element) and l.remove will crash
-		l.remove(e)
-	}
-	return e.Value
-}
-*/
-
 type qMessage struct {
 	USER  string `json:"USER" binding:"required"`
 	EMAIL string `json:"EMAIL" binding:"required"`
@@ -39,19 +15,21 @@ type qMessage struct {
 	MSG   string `json:"MSG" binding:"required"`
 }
 
-var queue []qMessage
+var queue []qMessage = nil
 
 func enqueue(queue []qMessage, element qMessage) []qMessage {
-	queue = append(queue, element) // Simply append to enqueue.
+	queue = append(queue, element)
 	fmt.Println("Enqueued:", element)
 	return queue
 }
 
-func dequeue(queue []qMessage) []qMessage {
-	// implement the todo to remove memory leak below
-	element := queue[0] // The first element is the one to be dequeued.
+func dequeueTop(queue []qMessage) []qMessage { return []qMessage{} }
+
+func dequeueBottom(queue []qMessage) []qMessage {
+	element := queue[0]
+	queue[0] = qMessage{}
 	fmt.Println("Dequeued:", element)
-	return queue[1:] // Slice off the element once it is dequeued.
+	return queue[1:]
 }
 
 func CreateQueue(c *gin.Context) {
@@ -61,11 +39,29 @@ func CreateQueue(c *gin.Context) {
 	})
 }
 
+func RemoveElemFromQueue(c *gin.Context) {
+	if queue == nil {
+		c.JSON(http.StatusNotFound, gin.H{
+			"msg": "queue doesn't exist, please create it!!!",
+		})
+		return
+	} else {
+		queue = dequeueBottom(queue)
+		c.JSON(http.StatusOK, gin.H{
+			"msg": queue,
+		})
+	}
+}
+
+// TODO: implement func to remove from top instead of bottom
+func RemoveLastElemFromQueue(c *gin.Context) { dequeueTop([]qMessage{}) }
+
 func PopulateQueues(c *gin.Context) {
 	if queue == nil {
 		c.JSON(http.StatusNotFound, gin.H{
 			"msg": "queue doesn't exist, please create it!!!",
 		})
+		return
 	} else {
 		queue = enqueue(queue, qMessage{
 			USER:  "roberto",
