@@ -19,9 +19,9 @@ func main() {
 	{
 		r.GET("/create", ctl.CreateQueue)
 		r.GET("/populate", ctl.PopulateQueues)
-		r.GET("/dqueue", ctl.RemoveElemFromQueue)
-		r.GET("/dqueueLast", ctl.RemoveLastElemFromQueue)
-		r.GET("/remove", ctl.RemoveElemFromQueue)
+		r.GET("/dqueue", ctl.RemoveElemFromBottom)
+		r.GET("/dqueueLast", ctl.RemoveLastElemFromTop)
+		r.GET("/remove", ctl.RemoveElemFromBottom)
 		r.POST("/query", ctl.GetQueues)
 	}
 	err := r.Run()
