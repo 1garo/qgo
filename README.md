@@ -1,5 +1,5 @@
-# qgo
+# qgo message broker
 
-### The idea is to create a queue (linked list) to be consumed using the following:
+### The idea is to create a queue to be consumed using the following:
 * http
-* web socket
+* ws (websocket)
