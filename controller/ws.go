@@ -9,8 +9,8 @@ import (
 
 // TODO: change this to a websocket server
 var wsupgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
+	ReadBufferSize:  2048,
+	WriteBufferSize: 2048,
 }
 
 func WsHandler(w http.ResponseWriter, r *http.Request) {
