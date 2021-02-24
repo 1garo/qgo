@@ -1,5 +1,4 @@
 # qgo message broker
 
-### The idea is to create a queue to be consumed using the following:
-* http
-* ws (websocket)
+### The idea is to create something similiar to redis, for learning purpouse.
+consumed via: http and ws (websocket)
